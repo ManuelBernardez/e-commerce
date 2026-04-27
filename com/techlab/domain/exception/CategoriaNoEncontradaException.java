@@ -1,0 +1,7 @@
+package com.techlab.domain.exception;
+
+public class CategoriaNoEncontradaException extends RuntimeException {
+    public CategoriaNoEncontradaException(int codigo) {
+        super("No existe la categoría con código: " + codigo);
+    }
+}
