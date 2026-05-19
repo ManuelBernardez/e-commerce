@@ -1,7 +1,6 @@
 package com.techlab.domain.model;
 
 import com.techlab.domain.interfaces.Identificable;
-import static com.techlab.utils.Validar.esVacio;
 
 public class Categoria implements Identificable {
 
@@ -27,9 +26,6 @@ public class Categoria implements Identificable {
     }
 
     public void setNombre(String nuevoNombre){
-        if ( esVacio(nuevoNombre) )
-            throw new Error("El nombre no puede estar vacío");
-
         this.nombre = nuevoNombre;
     }
 

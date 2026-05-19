@@ -32,6 +32,8 @@ public class Main {
         MenuProductos menuProductos = new MenuProductos(scanner, productoService);
 
         // TODO: Interfaz para repositorio, elegir temática del e-commerce, repensar los métodos de entrada de datos (scanner estático?)
+        // TODO: Mostrar categorias al agregar producto y Buscar productos por nombre añadido, actualicé forma de modificar productos
+        // TODO: Refactor sobre la creación y modificación de productos, añadí búsqueda por nombre de categorías y productos
 
         // ===== MENÚ PRINCIPAL =====
         int opcion;
@@ -42,7 +44,7 @@ public class Main {
             System.out.println("==========================");
             System.out.println("1. Gestionar productos");
             System.out.println("2. Gestionar categorías");
-            System.out.println("0. Salir");
+            System.out.println("3. Salir");
             System.out.println("==========================");
 
             opcion = leerEntero(scanner,"Seleccione una opción: ");
@@ -54,14 +56,14 @@ public class Main {
                 case 2:
                     menuCategorias.ejecutar();
                     break;
-                case 0:
+                case 3:
                     System.out.println("Saliendo del sistema...");
                     break;
                 default:
                     System.out.println("Opción inválida");
             }
 
-        } while (opcion != 0);
+        } while (opcion != 3);
 
         scanner.close();
     }

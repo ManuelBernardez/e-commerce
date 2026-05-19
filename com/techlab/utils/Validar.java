@@ -12,6 +12,6 @@ public final class Validar {
     }
 
     public static boolean esPositivo(double valor) {
-        return valor >= 0;
+        return valor > 0;
     }
 }

@@ -19,14 +19,8 @@ public class CategoriaService {
 
     public void crear(String nombre, String descripcion) {
 
-        // Validar duplicados
-        for (Categoria c : repoCategorias.listado()) {
-            if (c.getNombre().equalsIgnoreCase(nombre))
-                throw new CategoriaDuplicadaException(nombre);
-        }
-
-        int codigo = Secuencias.generarCodigoCategoria();
-        Categoria categoria = new Categoria(codigo, nombre, descripcion);
+        validarDuplicadoNombre(nombre);
+        Categoria categoria = new Categoria(Secuencias.generarCodigoCategoria(), nombre, descripcion);
 
         repoCategorias.agregar(categoria);
     }
@@ -35,7 +29,7 @@ public class CategoriaService {
         return repoCategorias.listado();
     }
 
-    public Categoria buscar(int codigo) {
+    public Categoria buscarPorCodigo(int codigo) {
         Categoria c = repoCategorias.buscarPorCodigo(codigo);
 
         if (c == null)
@@ -44,9 +38,19 @@ public class CategoriaService {
         return c;
     }
 
+    public Categoria buscarPorNombre(String nombre) {
+
+        Categoria c = repoCategorias.buscarPorNombre(nombre);
+
+        if (c == null)
+            throw new CategoriaNoEncontradaException(nombre);
+
+        return c;
+    }
+
     public void modificar(int codigo, String nombre, String descripcion) {
 
-        Categoria c = buscar(codigo);
+        Categoria c = buscarPorCodigo(codigo);
 
         System.out.println("Información actual:");
         System.out.println(c);
@@ -64,7 +68,15 @@ public class CategoriaService {
     }
 
     public void eliminar(int codigo) {
-        Categoria c = buscar(codigo);
+        Categoria c = buscarPorCodigo(codigo);
         repoCategorias.eliminar(c);
+    }
+
+    private void validarDuplicadoNombre(String nombre) {
+
+        Categoria existente = repoCategorias.buscarPorNombre(nombre);
+
+        if (existente != null)
+            throw new CategoriaDuplicadaException(nombre);
     }
 }

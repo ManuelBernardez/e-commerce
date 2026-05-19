@@ -32,37 +32,43 @@ public class MenuCategorias extends Menu {
 
         do {
             mostrarMenu();
-            opcion = leerEntero(scanner, "Elija una opción(0-5): ");
+            opcion = leerEntero(scanner, "Elija una opción(1-6): ");
 
             switch (opcion) {
                 case 1:
                     System.out.println("\n--- NUEVA CATEGORÍA ---");
                     crear();
+
                     break;
                 case 2:
                     System.out.println("\n--- LISTADO DE CATEGORÍAS ---");
                     listar();
+
                     break;
                 case 3:
                     System.out.println("\n--- BUSCAR CATEGORÍA ---");
+                    // Buscar() definido en la clase abstracta Menu
                     buscar();
+
                     break;
                 case 4:
                     System.out.println("\n--- MODIFICAR CATEGORÍA ---");
                     modificar();
+
                     break;
                 case 5:
                     System.out.println("\n--- ELIMINAR CATEGORÍA ---");
                     eliminar();
+
                     break;
-                case 0:
+                case 6:
                     System.out.println("Volviendo al menú principal...");
                     break;
                 default:
                     System.out.println("Error: Opción inválida");
             }
 
-        } while (opcion != 0);
+        } while (opcion != 6);
     }
 
     @Override
@@ -82,23 +88,35 @@ public class MenuCategorias extends Menu {
 
     @Override
     protected void listar() {
-        for (Categoria c : categoriaService.listar()) {
-            System.out.println(c);
-        }
+        if (categoriaService.listar().isEmpty())
+            System.out.println("No hay categorías cargadas");
+        else
+            for (Categoria c : categoriaService.listar())
+                System.out.println(c);
     }
 
     @Override
-    protected void buscar() {
-
-        int codigo = leerEntero(scanner, "Ingrese el código: ");
-
+    protected void buscarPorCodigo() {
         try {
-            Categoria c = categoriaService.buscar(codigo);
-            System.out.println("Categoría encontrada:");
-            System.out.println(c);
+            int codigo = leerEntero(scanner, "Ingrese el código: ");
+
+            Categoria c = categoriaService.buscarPorCodigo(codigo);
+            System.out.println("Categoría encontrada:" + c);
 
         } catch (CategoriaNoEncontradaException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println(e.getMessage());
+        }
+    }
+
+    protected void buscarPorNombre() {
+        try {
+            String nombre = leerTexto(scanner, "Ingrese el nombre: ");
+
+            Categoria c = categoriaService.buscarPorNombre(nombre);
+            System.out.println("Categoría encontrada:" + c);
+
+        } catch (CategoriaNoEncontradaException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -109,12 +127,8 @@ public class MenuCategorias extends Menu {
         String nombre = leerTexto(scanner, "Nuevo nombre: ");
         String descripcion = leerTexto(scanner, "Nueva descripción: ");
 
-        try {
-            categoriaService.modificar(codigo, nombre, descripcion);
-            System.out.println("Categoría modificada correctamente");
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
-        }
+        categoriaService.modificar(codigo, nombre, descripcion);
+        System.out.println("Categoría modificada correctamente");
     }
 
     @Override
@@ -123,14 +137,10 @@ public class MenuCategorias extends Menu {
         int codigo = leerEntero(scanner, "Ingrese el código: ");
 
         if (leerSiNo(scanner, "¿Borrar definitivamente?")) {
-            try {
                 categoriaService.eliminar(codigo);
                 System.out.println("Categoría eliminada correctamente");
-            } catch (RuntimeException e) {
-                System.out.println(e.getMessage());
-            }
-        } else {
-            System.out.println("Operación cancelada");
         }
+        else
+            System.out.println("Operación cancelada");
     }
 }

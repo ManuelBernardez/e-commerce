@@ -9,15 +9,14 @@ public abstract class Producto implements Calculable, Identificable
     protected int codigo;
     protected String nombre;
     protected double precio;
-    protected Categoria categoria;
-    RepositorioGenerico<Producto> repoArticulo;
+    protected String nombreCategoria;
 
     // Constructor
-    public Producto(int codigo, String nombre, double precio, Categoria categoria){
+    public Producto(int codigo, String nombre, double precio, String nombreCategoria){
         this.codigo = codigo;
         this.nombre = nombre;
         this.precio = precio;
-        this.categoria = categoria;
+        this.nombreCategoria = nombreCategoria;
     }
 
     // Getters y setters.
@@ -31,9 +30,6 @@ public abstract class Producto implements Calculable, Identificable
     }
 
     public void setNombre(String nuevoNombre){
-        if (esVacio(nuevoNombre))
-            System.out.println("El nombre no puede estar vacío");
-
         this.nombre = nuevoNombre;
     }
 
@@ -47,11 +43,16 @@ public abstract class Producto implements Calculable, Identificable
 
     public abstract double calcularPrecioFinal();
 
-    public abstract String getTipoArticulo();
+    public abstract String getTipoProducto();
+
+    public abstract String getDetalleEspecifico();
 
     @Override
     public String toString() {
-        return "ID [" + codigo + "] | Nombre: " + nombre + " | Precio: $" + precio + "Categoría: " + categoria;
+        return String.format(
+                "ID [%d] | Nombre: %s | Precio: $%.2f | Categoría: %s | %s",
+                codigo, nombre, calcularPrecioFinal(), nombreCategoria, getDetalleEspecifico()
+        );
     }
 }
 

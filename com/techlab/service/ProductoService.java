@@ -1,14 +1,12 @@
 package com.techlab.service;
 
 import com.techlab.domain.repository.RepositorioGenerico;
-import static com.techlab.utils.EntradaDatos.*;
 import com.techlab.domain.exception.*;
 import com.techlab.utils.Secuencias;
 import com.techlab.domain.model.*;
+import static com.techlab.utils.Validar.esVacio;
 
 import java.util.List;
-import java.util.Scanner;
-
 
 public class ProductoService {
     private final RepositorioGenerico<Producto> repoProductos;
@@ -20,45 +18,27 @@ public class ProductoService {
         this.repoCategorias = repoCategorias;
     }
 
-    public void crearProducto(String nombre, double precio, int codigoCategoria) {
-        Scanner scanner = new Scanner(System.in);
+    public void crearAlimenticio(String nombre, double precio, String categoria, int vencimiento) {
+        validarCategoria(categoria);
+        validarDuplicado(nombre);
 
-        for (Producto p : repoProductos.listado()) {
-            if (p.getNombre().equalsIgnoreCase(nombre))
-                throw new ProductoDuplicadoException(nombre);
-        }
+        Producto p = new ProductoAlimenticio(Secuencias.generarCodigoProducto(), nombre, precio, categoria, vencimiento);
+        repoProductos.agregar(p);
+    }
 
-        Categoria c = repoCategorias.buscarPorCodigo(codigoCategoria);
-        if (c == null)
-            throw new CategoriaNoEncontradaException(codigoCategoria);
+    public void crearElectronico(String nombre, double precio, String categoria, double garantiaMeses) {
+        validarCategoria(categoria);
+        validarDuplicado(nombre);
 
-        int codigo = Secuencias.generarCodigoCategoria();
-        Producto producto;
-
-        switch (codigoCategoria) {
-            case 1:
-                int vencimiento = leerEntero(scanner, "Caduca en (x días): ");
-                producto = new ProductoAlimenticio(codigo, nombre, precio, c, vencimiento);
-                break;
-
-            case 2:
-                double mesesGarantia = leerDouble(scanner, "Meses de garantía: ");
-                producto = new ProductoElectronico(codigo, nombre, precio, c, mesesGarantia);
-                break;
-
-            default:
-                System.out.println("Tipo de producto inválido");
-                return;
-        }
-
-        repoProductos.agregar(producto);
+        Producto p = new ProductoElectronico(Secuencias.generarCodigoProducto(), nombre, precio, categoria, garantiaMeses);
+        repoProductos.agregar(p);
     }
 
     public List<Producto> listar() {
         return repoProductos.listado();
     }
 
-    public Producto buscar(int codigo) {
+    public Producto buscarPorCodigo(int codigo) {
 
         Producto p = repoProductos.buscarPorCodigo(codigo);
 
@@ -68,14 +48,46 @@ public class ProductoService {
         return p;
     }
 
-    public void modificar(int codigo, String nombre, double precio) {
-        Producto p = buscar(codigo);
-        p.setNombre(nombre);
+    public Producto buscarPorNombre(String nombre) {
+
+        Producto p = repoProductos.buscarPorNombre(nombre);
+
+        if (p == null)
+            throw new ProductoNoEncontradoException(nombre);
+
+        return p;
+    }
+
+    public void modificar(Producto p, String nombre, double precio) {
+
         p.setPrecio(precio);
+
+        // Si se quiere cambiar el nombre, verifico que el nuevo nombre sea distinto al de los productos existentes
+        if (!esVacio(nombre)) {
+            Producto existente = repoProductos.buscarPorNombre(nombre);
+
+            if (existente != null)
+                throw new ProductoDuplicadoException(nombre);
+
+            p.setNombre(nombre);
+        }
+
     }
 
     public void eliminar(int codigo) {
-        Producto p = buscar(codigo);
+        Producto p = buscarPorCodigo(codigo);
         repoProductos.eliminar(p);
     }
+
+    private void validarDuplicado(String nombre) {
+        if (repoProductos.buscarPorNombre(nombre) != null)
+            throw new ProductoDuplicadoException(nombre);
+
+    }
+
+    private void validarCategoria(String categoria) {
+        if (repoCategorias.buscarPorNombre(categoria) == null)
+            throw new CategoriaNoEncontradaException(categoria);
+    }
+
 }

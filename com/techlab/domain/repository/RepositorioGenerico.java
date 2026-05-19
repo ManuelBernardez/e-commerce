@@ -4,7 +4,7 @@ import com.techlab.domain.interfaces.Identificable;
 
 public class RepositorioGenerico<T extends Identificable> {
 
-    private ArrayList<T> lista = new ArrayList<>();
+    private final ArrayList<T> lista = new ArrayList<>();
 
     public void agregar (T objeto) {
 
@@ -25,6 +25,16 @@ public class RepositorioGenerico<T extends Identificable> {
 
         for(T objeto : lista){
             if(objeto.getCodigo() == codigo)
+                return objeto;
+        }
+
+        return null;
+    }
+
+    public T buscarPorNombre(String nombre){
+
+        for(T objeto : lista){
+            if (objeto.getNombre().equalsIgnoreCase(nombre))
                 return objeto;
         }
 
