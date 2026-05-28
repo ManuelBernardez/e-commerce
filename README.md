@@ -1,17 +1,14 @@
-# Ecommerce Backend
+# Sistema de Ecommerce
 
-Sistema de ecommerce desarrollado en Java. 
+El proyecto está desarrollado en Java y actualmente funciona mediante consola. El objetivo es convertirlo en una API RESTful completa con Spring Boot y MySQL.
 
-Actualmente el sistema funciona mediante consola e implementa operaciones CRUD para la gestión de Productos, Categorías y Pedidos. El objetivo es convertirlo en una API RESTful completa con Spring Boot y MySQL.
-
----
 
 ## Estado del proyecto
 
-> **Fase actual:** Java puro, lógica orientada a objetos, arquitectura por capas (domain, service, presentation), persistencia temporal en memoria.
+> **Fase actual:** Java puro, lógica orientada a objetos, arquitectura por capas (domain, service, presentation), persistencia temporal en memoria. CRUD de productos, categorías y pedidos.
 > **Etapa en desarrollo:** Migración a Spring Boot y persistencia con MySQL.
 
----
+
 
 ## Funcionalidades actuales
 
@@ -20,7 +17,7 @@ Actualmente el sistema funciona mediante consola e implementa operaciones CRUD p
 - Gestión de **pedidos**
 - Interacción mediante menú por consola
 
----
+
 
 ## Tecnologías actuales
 
@@ -29,7 +26,7 @@ Actualmente el sistema funciona mediante consola e implementa operaciones CRUD p
 | Java | Lenguaje principal |
 | Git | Control de versiones |
 
----
+
 
 ## Estructura del proyecto
 
@@ -48,7 +45,7 @@ src/
     └── Main.java # Punto de entrada
 ```
 
----
+
 
 ## Cómo ejecutar
 
@@ -63,7 +60,7 @@ cd e-commerce
 
 3. Ejecutar la clase `Main.java`.
 
----
+
 
 ## Roadmap
 
@@ -79,23 +76,17 @@ cd e-commerce
 - [ ] Configuración de CORS
 - [ ] Dockerización
 
----
 
-## Buenas prácticas
-
-- Programación orientada a objetos (encapsulamiento, herencia, abstracción)
-- Separación de responsabilidades por capas (model / service)
-- Control de versiones con Git
 
 ## Objetivos técnicos
 
-* Aplicar principios SOLID
-* Practicar arquitectura por capas
-* Implementar una API REST escalable
-* Integrar persistencia relacional con MySQL
-* Preparar el sistema para despliegue con Docker
+- Aplicar principios SOLID
+- Practicar arquitectura por capas
+- Implementar una API REST escalable
+- Integrar persistencia relacional con MySQL
+- Preparar el sistema para despliegue con Docker
 
----
+
 
 ## Autor
 
